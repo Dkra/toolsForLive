@@ -1,12 +1,18 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import ax from 'axios'
+import ThList from 'react-icons/lib/ti/th-list'
+import ThSmall from 'react-icons/lib/ti/th-small'
+
+import { Select } from 'antd'
+const Option = Select.Option
 
 class search591 extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      sorting: 'refreshtime', // refreshtime,
+      sorting: 'refreshtime', // refreshtime, browsenum,
+      listView: 'detail', // detail, icon
       houseData: [],
     }
   }
@@ -36,25 +42,43 @@ class search591 extends Component {
     })
   }
 
+  onChangeListView = listView => {
+    this.setState({
+      listView,
+    })
+  }
+
   render() {
+    const { listView } = this.state
     return (
       <div>
-        <select onChange={e => this.onSelectChange(e.target.value)}>
-          <option value="refreshtime">Refresh Time</option>
-          <option value="browsenum">Most Views</option>
-        </select>
+        <div className="toolbar-wrap">
+          <Select defaultValue="refreshtime" onChange={this.onSelectChange}>
+            <Option value="refreshtime">Refresh Time</Option>
+            <Option value="browsenum">Most Views</Option>
+          </Select>
+          <div className="view-option">
+            <ThList
+              className={`${listView === 'detail' ? 'active' : ''}`}
+              onClick={() => this.onChangeListView('detail')}
+            />
+            <ThSmall
+              className={`${listView === 'icon' ? 'active' : ''}`}
+              onClick={() => this.onChangeListView('icon')}
+            />
+          </div>
+        </div>
 
-        <section>
+        <section
+          className={`item-house-wrap ${this.state.listView === 'icon'
+            ? 'sort-by-refresh'
+            : ''}`}
+        >
           {this.state.houseData
             .sort((a, b) => b[this.state.sorting] - a[this.state.sorting])
             .map((item, idx) => {
               return (
-                <div
-                  className={`item-house ${this.state.sorting === 'refreshtime'
-                    ? 'sort-by-refresh'
-                    : ''}`}
-                  key={`house-${idx}`}
-                >
+                <div className={`item-house`} key={`house-${idx}`}>
                   <a
                     href={`https://rent.591.com.tw/rent-detail-${item.houseid}.html`}
                     target="_blank"
