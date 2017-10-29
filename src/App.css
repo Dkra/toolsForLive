@@ -47,3 +47,17 @@
   margin-right: 10px;
   width: 200px;
 }
+
+.item-house > a,
+.item-house > a > img {
+  width: 200px;
+}
+.item-house.sort-by-refresh {
+  display: inline-block;
+  vertical-align: top;
+}
+.item-house.sort-by-refresh .column-address,
+.item-house.sort-by-refresh .column-refreshtime,
+.item-house.sort-by-refresh .column-views {
+  display: none;
+}

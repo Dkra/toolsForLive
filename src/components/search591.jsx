@@ -12,6 +12,12 @@ class search591 extends Component {
   }
   componentDidMount() {
     const url = 'http://localhost:8888/api/search591'
+    this.fetchHouseData(url)
+    setInterval(this.fetchHouseData, 60000)
+  }
+
+  fetchHouseData = () => {
+    const url = 'http://localhost:8888/api/search591'
     ax
       .get(url)
       .then(response => {
@@ -33,35 +39,45 @@ class search591 extends Component {
   render() {
     return (
       <div>
-        <input type="text" className="url" placeholder="search url" />
         <select onChange={e => this.onSelectChange(e.target.value)}>
           <option value="refreshtime">Refresh Time</option>
           <option value="browsenum">Most Views</option>
         </select>
-        <button>submit</button>
 
         <section>
           {this.state.houseData
             .sort((a, b) => b[this.state.sorting] - a[this.state.sorting])
             .map((item, idx) => {
               return (
-                <div className="item-house" key={`house-${idx}`}>
+                <div
+                  className={`item-house ${this.state.sorting === 'refreshtime'
+                    ? 'sort-by-refresh'
+                    : ''}`}
+                  key={`house-${idx}`}
+                >
                   <a
                     href={`https://rent.591.com.tw/rent-detail-${item.houseid}.html`}
                     target="_blank"
                   >
-                    <img src={`${item.cover}`} alt="" />
+                    <img
+                      src={`${item.cover}`}
+                      className="house-coverImg"
+                      alt=""
+                    />
                   </a>
 
-                  <span>
+                  <span className="column-address">
                     {item.address}
                   </span>
-                  <span>
-                    refreshtime:{moment(item.refreshtime * 1000).fromNow()}
+                  <span className="column-refreshtime">
+                    {moment(item.refreshtime * 1000).fromNow()}
                   </span>
-                  <span>
+                  <span className="column-views">
                     瀏覽次數:{item.browsenum}
                   </span>
+                  {/*
+                    <span>價錢: {item.price}</span>
+                  */}
                 </div>
               )
             })}
