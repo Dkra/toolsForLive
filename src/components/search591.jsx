@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import moment from 'moment'
+
 import ax from 'axios'
 import ThList from 'react-icons/lib/ti/th-list'
 import ThSmall from 'react-icons/lib/ti/th-small'
+import HouseItem from './search591/HouseItem'
 
 import { Select } from 'antd'
 const Option = Select.Option
@@ -78,31 +79,11 @@ class search591 extends Component {
             .sort((a, b) => b[this.state.sorting] - a[this.state.sorting])
             .map((item, idx) => {
               return (
-                <div className={`item-house`} key={`house-${idx}`}>
-                  <a
-                    href={`https://rent.591.com.tw/rent-detail-${item.houseid}.html`}
-                    target="_blank"
-                  >
-                    <img
-                      src={`${item.cover}`}
-                      className="house-coverImg"
-                      alt=""
-                    />
-                  </a>
-
-                  <span className="column-address">
-                    {item.address}
-                  </span>
-                  <span className="column-refreshtime">
-                    {moment(item.refreshtime * 1000).fromNow()}
-                  </span>
-                  <span className="column-views">
-                    瀏覽次數:{item.browsenum}
-                  </span>
-                  {/*
-                    <span>價錢: {item.price}</span>
-                  */}
-                </div>
+                <HouseItem
+                  className={`item-house`}
+                  key={`house-${idx}`}
+                  item={item}
+                />
               )
             })}
         </section>
