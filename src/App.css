@@ -7,7 +7,7 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 180px;
   padding: 20px;
   color: white; }
 
@@ -24,20 +24,36 @@
   to {
     transform: rotate(360deg); } }
 
-.nav-wrap a {
-  color: white; }
+.nav-wrap {
+  margin-top: 10px; }
+  .nav-wrap a {
+    font-size: 1.2em;
+    color: white; }
+    .nav-wrap a + a {
+      margin-left: 10px; }
 
 .item-house {
   display: flex;
   align-items: center;
   margin-bottom: 30px;
   justify-content: center; }
+  .item-house a {
+    position: relative; }
+    .item-house a img {
+      width: 100%; }
+    .item-house a .delete-icon {
+      display: none;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 36px;
+      color: white; }
+  .item-house:hover a .delete-icon {
+    display: block; }
 
 .item-house > * {
   margin-right: 10px;
   width: 200px; }
-  .item-house > * img {
-    width: 100%; }
 
 .item-house-wrap.sort-by-refresh {
   display: flex;
@@ -54,10 +70,16 @@
 .toolbar-wrap {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 15px;
   margin-bottom: 10px; }
   .toolbar-wrap .ant-select {
     margin-right: 15px; }
+
+.loading-img {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 100px; }
 
 .view-option {
   display: flex;

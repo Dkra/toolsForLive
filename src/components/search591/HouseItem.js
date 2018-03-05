@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import DeleteIcon from 'react-icons/lib/md/remove-circle'
 
 class HouseItem extends Component {
   constructor(props) {
@@ -7,15 +8,27 @@ class HouseItem extends Component {
     this.state = {}
   }
 
+  onClickImageWrap = (e, url) => {
+    e.preventDefault()
+    window.open(url, '_blank')
+  }
+
   render() {
-    const { key, item } = this.props
+    const { item, onClickDeleteIcon } = this.props
     return (
-      <div className={`item-house`} key={key}>
+      <div className={`item-house`}>
         <a
-          href={`https://rent.591.com.tw/rent-detail-${item.houseid}.html`}
-          target="_blank"
+          onClick={e =>
+            this.onClickImageWrap(
+              e,
+              `https://rent.591.com.tw/rent-detail-${item.houseid}.html`
+            )}
         >
           <img src={`${item.cover}`} className="house-coverImg" alt="" />
+          <DeleteIcon
+            className="delete-icon"
+            onClick={e => onClickDeleteIcon(e, item.id)}
+          />
         </a>
 
         <span className="column-address">
