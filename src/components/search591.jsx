@@ -83,7 +83,6 @@ class search591 extends Component {
 	}
 	render() {
 		const { listView, blackList } = this.state
-		console.log('blackList:', blackList)
 		return (
 			<div>
 				<div className="toolbar-wrap">
