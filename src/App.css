@@ -29,8 +29,12 @@
   .nav-wrap a {
     font-size: 1.2em;
     color: white; }
+    .nav-wrap a.active {
+      color: #49a9ee; }
     .nav-wrap a + a {
       margin-left: 10px; }
+    .nav-wrap a.active, .nav-wrap a:visited {
+      text-decoration: none; }
 
 .item-house {
   display: flex;
@@ -72,6 +76,9 @@
   justify-content: center;
   margin-top: 15px;
   margin-bottom: 10px; }
+  .toolbar-wrap input.input-filter {
+    width: 200px;
+    margin-right: 20px; }
   .toolbar-wrap .ant-select {
     margin-right: 15px; }
 

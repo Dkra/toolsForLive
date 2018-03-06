@@ -4,8 +4,9 @@ import ThList from 'react-icons/lib/ti/th-list'
 import ThSmall from 'react-icons/lib/ti/th-small'
 import JobItem from './search104/JobItem'
 import ContentLoader from 'react-content-loader'
-import { Select } from 'antd'
+import { Select, Input } from 'antd'
 import { salaryDigitsFormater } from '../utils/digits'
+import store from 'store2'
 const Option = Select.Option
 
 class search104 extends Component {
@@ -14,6 +15,7 @@ class search104 extends Component {
 		this.state = {
 			sorting: 'salaryHigh',
 			listView: 'detail',
+			filteredCompany: store.get('filteredCompany'),
 			jobData: [],
 			blackList: []
 		} // refreshtime, browsenum, // detail, icon
@@ -48,11 +50,29 @@ class search104 extends Component {
 		})
 	}
 
+	onChangeCompFilter = e => {
+		const text = e.target.value
+		store.set('filteredCompany', text)
+		this.setState({ filteredCompany: text })
+	}
+
 	render() {
-		const { listView, blackList } = this.state
+		const { listView, blackList, filteredCompany } = this.state
+		const filteredCompanyArr = filteredCompany
+			.split(',')
+			.map(comp => comp.trim())
+			// not empty string and company name should at least two character
+			.filter(comp => comp && comp.length >= 2)
 		return (
 			<div>
 				<div className="toolbar-wrap">
+					<Input
+						defaultValue={filteredCompany}
+						className="input-filter"
+						placeholder="Filter is possible e.g: 大潤發, 聯電"
+						onChange={e => this.onChangeCompFilter(e)}
+						title="at least two character"
+					/>
 					<Select defaultValue="salaryHigh" onChange={this.onSelectChange}>
 						<Option value="salaryHigh">By Salary</Option>
 						<Option value="appearDate">By Date</Option>
@@ -83,7 +103,14 @@ class search104 extends Component {
 						</ContentLoader>
 					) : (
 						this.state.jobData
-							.filter(item => !this.state.blackList.includes(item.id))
+							// .filter(item => !this.state.blackList.includes(item.id))
+							.filter(
+								item =>
+									filteredCompanyArr.length === 0 ||
+									!filteredCompanyArr.some(filterComp =>
+										item.custName.includes(filterComp)
+									)
+							)
 							.sort(
 								(a, b) =>
 									salaryDigitsFormater(b[this.state.sorting]) -

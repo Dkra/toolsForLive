@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import 'antd/dist/antd.css'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom'
 import search591 from './components/search591'
 import search104 from './components/search104'
 
@@ -15,8 +15,12 @@ class App extends Component {
 						<img src={logo} className="App-logo" alt="logo" />
 						<h1 className="App-title">Make Live Easier</h1>
 						<section className="nav-wrap">
-							<Link to="/search591">Search 591</Link>
-							<Link to="/search104">Search 104</Link>
+							<NavLink to="/search591" activeClassName="active">
+								Search 591
+							</NavLink>
+							<NavLink to="/search104" activeClassName="active">
+								Search 104
+							</NavLink>
 						</section>
 					</header>
 
