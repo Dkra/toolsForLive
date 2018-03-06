@@ -15,7 +15,7 @@ class search104 extends Component {
 		this.state = {
 			sorting: 'salaryHigh',
 			listView: 'detail',
-			filteredCompany: store.get('filteredCompany'),
+			filteredCompany: store.get('filteredCompany') || '',
 			jobData: [],
 			blackList: []
 		} // refreshtime, browsenum, // detail, icon

@@ -16,10 +16,10 @@ class App extends Component {
 						<h1 className="App-title">Make Live Easier</h1>
 						<section className="nav-wrap">
 							<NavLink to="/search591" activeClassName="active">
-								Search 591
+								Better591
 							</NavLink>
 							<NavLink to="/search104" activeClassName="active">
-								Search 104
+								Better104
 							</NavLink>
 						</section>
 					</header>
