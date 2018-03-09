@@ -2,20 +2,26 @@ import React, { Component } from 'react'
 import ax from 'axios'
 import ThList from 'react-icons/lib/ti/th-list'
 import ThSmall from 'react-icons/lib/ti/th-small'
+import Anchor from 'react-icons/lib/fa/anchor'
+
 import JobItem from './search104/JobItem'
-import ContentLoader from 'react-content-loader'
-import { Select, Input } from 'antd'
+import { Select, Input, Radio } from 'antd'
 import { salaryDigitsFormater } from '../utils/digits'
+import DataLoading from './common/dataLoading'
+
 import store from 'store2'
 const Option = Select.Option
+const RadioGroup = Radio.Group
 
 class search104 extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			radioValue: 'tpe',
 			sorting: 'salaryHigh',
 			listView: 'detail',
 			filteredCompany: store.get('filteredCompany') || '',
+			bookmark: store.get('bookmark') || { tpe: '', tch: '' },
 			jobData: [],
 			blackList: []
 		} // refreshtime, browsenum, // detail, icon
@@ -24,14 +30,15 @@ class search104 extends Component {
 		this.fetchJobData()
 	}
 
-	fetchJobData = () => {
+	componentWillReceiveProps() {}
+
+	fetchJobData = ({ area } = {}) => {
 		const url = 'http://localhost:8888/api/search104'
+		const { radioValue } = this.state
 		ax
-			.get(url)
+			.get(url, { params: { area: area || radioValue } })
 			.then(response => {
-				this.setState({
-					jobData: response.data
-				})
+				this.setState({ jobData: response.data })
 			})
 			.catch(error => {
 				console.log('error:', error)
@@ -56,8 +63,34 @@ class search104 extends Component {
 		this.setState({ filteredCompany: text })
 	}
 
+	onChangeRadio = e => {
+		this.setState({ radioValue: e.target.value, jobData: [] })
+		this.fetchJobData({ area: e.target.value })
+	}
+
+	onClickBookmark = (companyName, area) => {
+		const nextBookmarkObj = Object.assign({}, this.state.bookmark, {
+			[area]: companyName
+		})
+		this.setState({
+			bookmark: nextBookmarkObj
+		})
+		store.set('bookmark', nextBookmarkObj)
+	}
+
+	scrollToBookmark = () => {
+		const area = this.state.radioValue
+		const currBookmark = this.state.bookmark[area]
+		const scrollOptions = { behavior: 'smooth' }
+		const bookmarkElm = document.querySelectorAll(
+			`[data-jobname='${currBookmark}']`
+		)[0]
+
+		bookmarkElm.scrollIntoView(true, scrollOptions)
+	}
+
 	render() {
-		const { listView, blackList, filteredCompany } = this.state
+		const { listView, blackList, filteredCompany, bookmark } = this.state
 		const filteredCompanyArr = filteredCompany
 			.split(',')
 			.map(comp => comp.trim())
@@ -66,6 +99,13 @@ class search104 extends Component {
 		return (
 			<div>
 				<div className="toolbar-wrap">
+					<RadioGroup
+						onChange={this.onChangeRadio}
+						value={this.state.radioValue}
+					>
+						<Radio value={'tpe'}>台北</Radio>
+						<Radio value={'tch'}>台中</Radio>
+					</RadioGroup>
 					<Input
 						defaultValue={filteredCompany}
 						className="input-filter"
@@ -86,6 +126,10 @@ class search104 extends Component {
 							className={`${listView === 'icon' ? 'active' : ''}`}
 							onClick={() => this.onChangeListView('icon')}
 						/> */}
+
+						{this.state.jobData.length !== 0 ? (
+							<Anchor onClick={this.scrollToBookmark} />
+						) : null}
 					</div>
 				</div>
 
@@ -95,12 +139,7 @@ class search104 extends Component {
 					}`}
 				>
 					{this.state.jobData.length === 0 ? (
-						<ContentLoader className="loading-img">
-							<rect x="0" y="0" rx="5" ry="5" width="100%" height="10" />
-							<rect x="0" y="40" rx="5" ry="5" width="100%" height="10" />
-							<rect x="0" y="80" rx="5" ry="5" width="100%" height="10" />
-							<rect x="0" y="120" rx="5" ry="5" width="100%" height="10" />
-						</ContentLoader>
+						<DataLoading className="loading-img" />
 					) : (
 						this.state.jobData
 							// .filter(item => !this.state.blackList.includes(item.id))
@@ -123,6 +162,9 @@ class search104 extends Component {
 										key={`job-${idx}`}
 										item={item}
 										onClickDeleteIcon={this.onClickDeleteIcon}
+										onClickBookmark={this.onClickBookmark}
+										area={this.state.radioValue}
+										bookmark={bookmark[this.state.radioValue]}
 									/>
 								)
 							})

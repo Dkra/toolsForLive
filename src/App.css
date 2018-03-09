@@ -100,14 +100,16 @@
     color: #61dafb; }
 
 .item-job-wrap .item-job {
+  position: relative;
   display: flex;
   width: 50%;
   padding-top: 15px;
   padding-bottom: 15px;
   margin: 0px auto 0 auto;
-  cursor: pointer;
   border-left: 2px solid white;
   border-right: 2px solid white; }
+  .item-job-wrap .item-job.isMarked {
+    background-color: red !important; }
   .item-job-wrap .item-job:nth-child(even) {
     border-left: 2px solid #e2e2e2;
     border-right: 2px solid #e2e2e2;
@@ -119,12 +121,24 @@
     text-align: left;
     padding-left: 10px;
     font-size: 1.3em;
-    width: 40%; }
+    width: 40%;
+    cursor: pointer; }
   .item-job-wrap .item-job .salary {
     font-size: 1.1em;
-    width: 30%; }
+    width: 30%;
+    cursor: pointer; }
   .item-job-wrap .item-job .company {
     font-size: 1.2em;
     width: 30%;
     text-align: left;
     padding-left: 15px; }
+  .item-job-wrap .item-job .add-bookmark {
+    position: absolute;
+    opacity: 0;
+    font-size: 1.4em;
+    right: -30px;
+    top: 19px;
+    transition: 0.2s all;
+    cursor: pointer; }
+    .item-job-wrap .item-job .add-bookmark.active {
+      opacity: 1; }
