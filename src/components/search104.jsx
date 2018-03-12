@@ -8,11 +8,10 @@ import JobItem from './search104/JobItem'
 import { Select, Input, Radio } from 'antd'
 import { salaryDigitsFormater } from '../utils/digits'
 import DataLoading from './common/dataLoading'
-
 import store from 'store2'
 const Option = Select.Option
 const RadioGroup = Radio.Group
-
+console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 class search104 extends Component {
 	constructor(props) {
 		super(props)
@@ -41,7 +40,7 @@ class search104 extends Component {
 				this.setState({ jobData: response.data })
 			})
 			.catch(error => {
-				console.log('error:', error)
+				console.log('error.response:', error.response)
 			})
 	}
 
@@ -83,7 +82,7 @@ class search104 extends Component {
 		const currBookmark = this.state.bookmark[area]
 		const scrollOptions = { behavior: 'smooth' }
 		const bookmarkElm = document.querySelectorAll(
-			`[data-jobname='${currBookmark}']`
+			`[data-jobNo='${currBookmark}']`
 		)[0]
 
 		bookmarkElm.scrollIntoView(true, scrollOptions)
@@ -128,7 +127,10 @@ class search104 extends Component {
 						/> */}
 
 						{this.state.jobData.length !== 0 ? (
-							<Anchor onClick={this.scrollToBookmark} />
+							<Anchor
+								className="icon-scrollto"
+								onClick={this.scrollToBookmark}
+							/>
 						) : null}
 					</div>
 				</div>

@@ -18,12 +18,12 @@ class JobItem extends Component {
 		window.open(url, '_blank')
 	}
 
-	onClickBookmark = (e, jobName) => {
+	onClickBookmark = (e, jobNo) => {
 		const { onClickBookmark, area } = this.props
 		e.preventDefault()
 		e.stopPropagation()
-		console.log('jobName:', jobName)
-		onClickBookmark(jobName, area)
+		console.log('jobNo:', jobNo)
+		onClickBookmark(jobNo, area)
 	}
 
 	onHoverJobItem = () => {
@@ -50,11 +50,11 @@ class JobItem extends Component {
 		const { isHovered } = this.state
 		return (
 			<div
-				className={`item-job ${bookmark === item.jobName ? 'isMarked' : ''}`}
+				className={`item-job ${bookmark === item.jobNo ? 'isMarked' : ''}`}
 				onMouseEnter={this.onHoverJobItem}
 				onMouseLeave={this.onHoveroutJobItem}
 				onClick={e => this.onClickJobitem(e, item.link.job)}
-				data-jobname={item.jobName}
+				data-jobNo={item.jobNo}
 			>
 				<div className="name">{item.jobName}</div>
 				<div className="salary">{item.salaryDesc.replace('月薪', '')}</div>
@@ -64,7 +64,7 @@ class JobItem extends Component {
 				<div className="bookmark"> </div>
 				<Bookmark
 					className={`add-bookmark ${isHovered ? 'active' : ''}`}
-					onClick={e => this.onClickBookmark(e, item.jobName)}
+					onClick={e => this.onClickBookmark(e, item.jobNo)}
 				/>
 			</div>
 		)

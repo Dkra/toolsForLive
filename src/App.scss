@@ -109,6 +109,11 @@
 	.ant-select {
 		margin-right: 15px;
 	}
+	.icon-scrollto {
+		&:hover {
+			color: #61dafb;
+		}
+	}
 }
 .loading-img {
 	max-width: 800px;
@@ -140,14 +145,15 @@
 		padding-bottom: 15px;
 		margin: 0px auto 0 auto;
 
-		border-left: 2px solid white;
-		border-right: 2px solid white;
+		border: 2px solid white;
 		&.isMarked {
-			background-color: red !important;
+			border: 2px solid rgb(67, 140, 196) !important;
+			.add-bookmark {
+				opacity: 1;
+			}
 		}
 		&:nth-child(even) {
-			border-left: 2px solid #e2e2e2;
-			border-right: 2px solid #e2e2e2;
+			border: 2px solid #e2e2e2;
 			background-color: #e2e2e2;
 		}
 		&:hover {
