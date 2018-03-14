@@ -1,15 +1,12 @@
 # Stage 1
 
-FROM node:9.5 as build-deps
+FROM node:9.8 as build-deps
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY . /usr/src/app
-RUN npm install
-
-EXPOSE 3000
-
+RUN yarn install
 RUN npm run build
 
 # Stage 2

@@ -3,7 +3,7 @@ import ax from 'axios'
 import ThList from 'react-icons/lib/ti/th-list'
 import ThSmall from 'react-icons/lib/ti/th-small'
 import Anchor from 'react-icons/lib/fa/anchor'
-
+import apiUrl from '../utils/apiUrl'
 import JobItem from './search104/JobItem'
 import { Select, Input, Radio } from 'antd'
 import { salaryDigitsFormater } from '../utils/digits'
@@ -12,6 +12,8 @@ import store from 'store2'
 const Option = Select.Option
 const RadioGroup = Radio.Group
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
+console.log('apiUrl:', apiUrl)
+
 class search104 extends Component {
 	constructor(props) {
 		super(props)
@@ -32,7 +34,7 @@ class search104 extends Component {
 	componentWillReceiveProps() {}
 
 	fetchJobData = ({ area } = {}) => {
-		const url = 'http://localhost:8888/api/search104'
+		const url = `${apiUrl}/search104`
 		const { radioValue } = this.state
 		ax
 			.get(url, { params: { area: area || radioValue } })
@@ -89,7 +91,13 @@ class search104 extends Component {
 	}
 
 	render() {
-		const { listView, blackList, filteredCompany, bookmark } = this.state
+		const {
+			listView,
+			blackList,
+			filteredCompany,
+			bookmark,
+			radioValue
+		} = this.state
 		const filteredCompanyArr = filteredCompany
 			.split(',')
 			.map(comp => comp.trim())
@@ -98,10 +106,7 @@ class search104 extends Component {
 		return (
 			<div>
 				<div className="toolbar-wrap">
-					<RadioGroup
-						onChange={this.onChangeRadio}
-						value={this.state.radioValue}
-					>
+					<RadioGroup onChange={this.onChangeRadio} value={radioValue}>
 						<Radio value={'tpe'}>台北</Radio>
 						<Radio value={'tch'}>台中</Radio>
 					</RadioGroup>
@@ -126,7 +131,7 @@ class search104 extends Component {
 							onClick={() => this.onChangeListView('icon')}
 						/> */}
 
-						{this.state.jobData.length !== 0 ? (
+						{this.state.jobData.length !== 0 && bookmark[radioValue] !== '' ? (
 							<Anchor
 								className="icon-scrollto"
 								onClick={this.scrollToBookmark}
@@ -165,8 +170,8 @@ class search104 extends Component {
 										item={item}
 										onClickDeleteIcon={this.onClickDeleteIcon}
 										onClickBookmark={this.onClickBookmark}
-										area={this.state.radioValue}
-										bookmark={bookmark[this.state.radioValue]}
+										area={radioValue}
+										bookmark={bookmark[radioValue]}
 									/>
 								)
 							})
