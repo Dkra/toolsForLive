@@ -63,10 +63,11 @@
   display: flex;
   flex-wrap: wrap; }
   .item-house-wrap.sort-by-refresh .item-house {
+    display: flex;
+    flex-direction: column;
     margin-left: 30px;
     margin-right: 10px;
     margin-top: 10px; }
-  .item-house-wrap.sort-by-refresh .column-address,
   .item-house-wrap.sort-by-refresh .column-refreshtime,
   .item-house-wrap.sort-by-refresh .column-views {
     display: none; }

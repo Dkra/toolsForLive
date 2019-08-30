@@ -1,46 +1,60 @@
 import React, { Component } from 'react'
-
 import ax from 'axios'
 import ThList from 'react-icons/lib/ti/th-list'
 import ThSmall from 'react-icons/lib/ti/th-small'
 import HouseItem from './search591/HouseItem'
 import ContentLoader from 'react-content-loader'
-import { Select } from 'antd'
+import { Select, Input, Button } from 'antd'
+import store from 'store2'
 const Option = Select.Option
 
 class search591 extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			sorting: 'refreshtime', // refreshtime, browsenum,
-			listView: 'detail', // detail, icon
+			sorting: 'price', // refreshtime, browsenum, price
+			listView: 'icon', // detail, icon
+			filteredText: store.get('filteredText') || '',
 			houseData: [],
-			blackList: []
+			blackList: new Set(),
+			priceLow: 16,
+			priceHigh: 18
 		}
 	}
 	componentDidMount() {
 		const url = 'http://localhost:8888/api/search591'
 		this.fetchBlackList()
 		this.fetchHouseData(url)
-		setInterval(this.fetchHouseData, 60000)
 	}
+
+	onChangeCompFilter = e => {
+		const text = e.target.value
+		store.set('filteredText', text)
+		this.setState({ filteredText: text })
+	}
+
 	fetchBlackList = () => {
 		const url = 'http://localhost:8888/api/search591/black-list'
-		ax
-			.get(url)
+		ax.get(url)
 			.then(response => {
 				this.setState({
-					blackList: response.data
+					blackList: new Set(response.data)
 				})
 			})
 			.catch(err => {
 				console.log('err:', err)
 			})
 	}
-	fetchHouseData = () => {
+
+	fetchHouseData = ({ reset } = {}) => {
 		const url = 'http://localhost:8888/api/search591'
-		ax
-			.get(url)
+		reset ? this.setState({ houseData: [] }) : null
+		ax.get(url, {
+			params: {
+				priceLow: this.state.priceLow * 1000,
+				priceHigh: this.state.priceHigh * 1000
+			}
+		})
 			.then(response => {
 				this.setState({
 					houseData: response.data
@@ -66,10 +80,9 @@ class search591 extends Component {
 	onClickDeleteIcon = (e, id) => {
 		const url = 'http://localhost:8888/api/search591/black-list/add'
 		e.stopPropagation()
-		ax
-			.post(url, {
-				id: id
-			})
+		ax.post(url, {
+			id: id
+		})
 			.then(response => {
 				console.log('response:', response)
 			})
@@ -77,19 +90,72 @@ class search591 extends Component {
 				console.log('error:', error)
 			})
 
+		const nextSet = new Set(this.state.blackList)
+		nextSet.add(id)
 		this.setState({
-			blackList: [...this.state.blackList, id]
+			blackList: nextSet
 		})
 	}
+
+	priceToNumber = str => {
+		const num = parseInt(str.replace(',', ''))
+		return num
+	}
+
 	render() {
-		const { listView, blackList } = this.state
+		const {
+			listView,
+			blackList,
+			priceHigh,
+			priceLow,
+			filteredText
+		} = this.state
+
+		const filteredTextArr = filteredText
+			.split(',')
+			.map(comp => comp.trim())
+			// not empty string and company name should at least two character
+			.filter(comp => comp && comp.length >= 2)
+
 		return (
 			<div>
 				<div className="toolbar-wrap">
-					<Select defaultValue="refreshtime" onChange={this.onSelectChange}>
+					<Input
+						defaultValue={filteredText}
+						className="input-filter"
+						placeholder="Filter text e.g: A, B"
+						onChange={e => this.onChangeCompFilter(e)}
+						title="at least two character"
+					/>
+					<Input
+						style={{ width: 100 }}
+						value={priceLow}
+						placeholder="Price Low"
+						onChange={e => this.setState({ priceLow: e.target.value })}
+					/>~
+					<Input
+						style={{ width: 100, marginRight: 10 }}
+						value={priceHigh}
+						placeholder="Price High"
+						onChange={e => this.setState({ priceHigh: e.target.value })}
+						onKeyDown={e =>
+							13 == e.keyCode ? this.fetchHouseData({ reset: true }) : null
+						}
+					/>
+					<Select
+						defaultValue={this.state.sorting}
+						onChange={this.onSelectChange}
+					>
 						<Option value="refreshtime">Refresh Time</Option>
 						<Option value="browsenum">Most Views</Option>
+						<Option value="price">Most Expensive</Option>
 					</Select>
+					<Button
+						style={{ marginRight: 15 }}
+						onClick={() => this.fetchHouseData({ reset: true })}
+					>
+						送出
+					</Button>
 					<div className="view-option">
 						<ThList
 							className={`${listView === 'detail' ? 'active' : ''}`}
@@ -116,9 +182,24 @@ class search591 extends Component {
 						</ContentLoader>
 					) : (
 						this.state.houseData
-							.filter(item => !this.state.blackList.includes(item.id))
-							.sort((a, b) => b[this.state.sorting] - a[this.state.sorting])
+							.filter(
+								item =>
+									filteredTextArr.length === 0 ||
+									!filteredTextArr.some(filterComp =>
+										item.address.includes(filterComp)
+									)
+							)
+							.filter(item => !this.state.blackList.has(item.id))
+							.sort(
+								(a, b) =>
+									this.state.sorting === 'price'
+										? // to number without comma
+										  this.priceToNumber(b[this.state.sorting]) -
+										  this.priceToNumber(a[this.state.sorting])
+										: b[this.state.sorting] - a[this.state.sorting]
+							)
 							.map((item, idx) => {
+								console.log('item:', item)
 								return (
 									<HouseItem
 										className={`item-house`}
