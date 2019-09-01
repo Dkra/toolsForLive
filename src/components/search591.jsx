@@ -18,8 +18,8 @@ class search591 extends Component {
 			houseData: [],
 			blackList: new Set(),
 			protectList: new Set(),
-			priceLow: 12,
-			priceHigh: 13
+			priceLow: store.get('priceLow') || 12,
+			priceHigh: store.get('priceHigh') || 13
 		}
 	}
 	
@@ -217,13 +217,19 @@ class search591 extends Component {
 						style={{ width: 100 }}
 						value={priceLow}
 						placeholder="Price Low"
-						onChange={e => this.setState({ priceLow: e.target.value })}
+						onChange={e => {
+							store.set('priceLow', e.target.value)
+							this.setState({ priceLow: e.target.value })
+						}}
 					/>~
 					<Input
 						style={{ width: 100, marginRight: 10 }}
 						value={priceHigh}
 						placeholder="Price High"
-						onChange={e => this.setState({ priceHigh: e.target.value })}
+						onChange={e => {
+							store.set('priceHigh', e.target.value)
+							this.setState({ priceHigh: e.target.value })
+						}}
 						onKeyDown={e =>
 							13 == e.keyCode ? this.fetchHouseData({ reset: true }) : null
 						}
