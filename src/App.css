@@ -23,7 +23,6 @@
     transform: rotate(0deg); }
   to {
     transform: rotate(360deg); } }
-
 .nav-wrap {
   margin-top: 10px; }
   .nav-wrap a {
@@ -52,12 +51,20 @@
       right: 5px;
       font-size: 36px;
       color: white; }
+    .item-house a .protect-item {
+      position: absolute;
+      color: #82e182;
+      top: -15px;
+      left: -15px;
+      font-size: 36px; }
+      .item-house a .protect-item.protected {
+        color: #82e182; }
   .item-house:hover a .delete-icon {
     display: block; }
 
 .item-house > * {
   margin-right: 10px;
-  width: 200px; }
+  width: 250px; }
 
 .item-house-wrap.sort-by-refresh {
   display: flex;
@@ -71,12 +78,16 @@
   .item-house-wrap.sort-by-refresh .column-refreshtime,
   .item-house-wrap.sort-by-refresh .column-views {
     display: none; }
+.item-house-wrap.list-view-detail {
+  padding-left: 20px; }
+  .item-house-wrap.list-view-detail.item-house {
+    margin-bottom: 50px; }
 
 .toolbar-wrap {
   display: flex;
   justify-content: center;
   margin-top: 15px;
-  margin-bottom: 10px; }
+  margin-bottom: 50px; }
   .toolbar-wrap input.input-filter {
     width: 200px;
     margin-right: 20px; }
@@ -145,3 +156,5 @@
     cursor: pointer; }
     .item-job-wrap .item-job .add-bookmark.active {
       opacity: 1; }
+
+/*# sourceMappingURL=App.css.map */

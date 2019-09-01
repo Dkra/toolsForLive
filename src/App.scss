@@ -68,6 +68,17 @@
 			font-size: 36px;
 			color: white;
 		}
+		.protect-item {
+			// display: none;
+			position: absolute;
+			color: rgb(130, 225, 130);
+			top: -15px;
+			left: -15px;
+			font-size: 36px;
+			&.protected {
+				color: rgb(130, 225, 130);
+			}
+		}
 	}
 	&:hover {
 		a .delete-icon {
@@ -78,7 +89,7 @@
 
 .item-house > * {
 	margin-right: 10px;
-	width: 200px;
+	width: 250px;
 }
 
 .item-house-wrap {
@@ -97,12 +108,19 @@
 			display: none;
 		}
 	}
+
+	&.list-view-detail {
+		padding-left: 20px;
+		&.item-house {
+			margin-bottom: 50px;
+		}
+	}
 }
 .toolbar-wrap {
 	display: flex;
 	justify-content: center;
 	margin-top: 15px;
-	margin-bottom: 10px;
+	margin-bottom: 50px;
 	input.input-filter {
 		width: 200px;
 		margin-right: 20px;
