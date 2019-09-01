@@ -40,6 +40,8 @@
   align-items: center;
   margin-bottom: 30px;
   justify-content: center; }
+  .item-house.filtered-by-text {
+    opacity: 0.03; }
   .item-house a {
     position: relative; }
     .item-house a img {

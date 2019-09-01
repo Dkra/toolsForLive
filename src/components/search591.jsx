@@ -18,8 +18,8 @@ class search591 extends Component {
 			houseData: [],
 			blackList: new Set(),
 			protectList: new Set(),
-			priceLow: 17,
-			priceHigh: 18
+			priceLow: 12,
+			priceHigh: 13
 		}
 	}
 	
@@ -173,20 +173,35 @@ class search591 extends Component {
 		return num
 	}
 
+	isFilteredbyText = (item) => {
+		const {
+			filteredText
+		} = this.state
+		const filteredTextArr = filteredText
+			.split(',')
+			.map(comp => comp.trim())
+			// not empty string and company name should at least two character
+			.filter(comp => comp && comp.length >= 2)
+
+		const willFilter = !filteredTextArr.length ? false : filteredTextArr.some(filterComp =>
+			item.address.includes(filterComp)
+		)
+		return willFilter
+	}
 	render() {
 		const {
 			listView,
 			blackList,
 			priceHigh,
 			priceLow,
-			filteredText
+			filteredText,
 		} = this.state
-
-		// const filteredTextArr = filteredText
-		// 	.split(',')
-		// 	.map(comp => comp.trim())
-		// 	// not empty string and company name should at least two character
-		// 	.filter(comp => comp && comp.length >= 2)
+		
+		const filteredTextArr = filteredText
+			.split(',')
+			.map(comp => comp.trim())
+			// not empty string and company name should at least two character
+			.filter(comp => comp && comp.length >= 2)
 
 		return (
 			<div>
@@ -284,6 +299,7 @@ class search591 extends Component {
 										key={`house-${item.id}`}
 										item={item}
 										isProtected={this.state.protectList.has(`${item.id}`)}
+										isFilteredbyText={this.isFilteredbyText(item)}
 										onClickDeleteIcon={this.onClickDeleteIcon}
 										onClickAddProtectIcon={this.onClickAddProtectIcon}
 										onClickDeleteProtectIcon={this.onClickDeleteProtectIcon}

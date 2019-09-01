@@ -20,12 +20,15 @@ class HouseItem extends Component {
       item,
       onClickDeleteIcon,
       isProtected,
+      isFilteredbyText,
       onClickAddProtectIcon,
       onClickDeleteProtectIcon
     } = this.props;
 
     return (
-      <div className={`item-house`}>
+      <div
+        className={`item-house ${isFilteredbyText ? "filtered-by-text" : ""}`}
+      >
         <a
           onClick={e => {
             this.onClickImageWrap(

@@ -55,6 +55,9 @@
 	align-items: center;
 	margin-bottom: 30px;
 	justify-content: center;
+	&.filtered-by-text {
+		opacity: 0.03;
+	}
 	a {
 		position: relative;
 		img {
