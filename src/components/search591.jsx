@@ -12,6 +12,8 @@ class search591 extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			cookie: 'user_index_role=1; T591_TOKEN=7a0d709af5a2c98338ad937f213058b5; urlJumpIp=1; urlJumpIpByTxt=%E5%8F%B0%E5%8C%97%E5%B8%82; _ga=GA1.4.237250086.1567346615; _ga=GA1.3.237250086.1567346615; __auc=e68d1f0b16ced236665272b380e; 561c38c1115322c4bad3e8dea3a18f82=1; is_new_index=1; is_new_index_redirect=1; _fbp=fb.2.1573650044075.977450676; webp=1; PHPSESSID=itnv00te637ojm7a9tje26gdl1; imgClick=8479173; localTime=2; new_rent_list_kind_test=0; userLoginHttpReferer=https%253A%252F%252Frent.591.com.tw%252F%253Fkind%253D2%2526region%253D1%2526section%253D5%252C3%252C7%252C4%252C1%2526rentprice%253D11000%252C15000%2526area%253D8%252C12%2526not_cover%253D1%2526role%253D1; u_info=%2FLVTN%2BgX%2FehhHOKrlmvb9wFWJvbEe6YYc6n6; 591equipment=08257200015746044572414258; user_browse_recent=a%3A5%3A%7Bi%3A0%3Ba%3A2%3A%7Bs%3A4%3A%22type%22%3Bi%3A1%3Bs%3A7%3A%22post_id%22%3Bs%3A7%3A%228503547%22%3B%7Di%3A1%3Ba%3A2%3A%7Bs%3A4%3A%22type%22%3Bi%3A1%3Bs%3A7%3A%22post_id%22%3Bs%3A7%3A%228499306%22%3B%7Di%3A2%3Ba%3A2%3A%7Bs%3A4%3A%22type%22%3Bi%3A1%3Bs%3A7%3A%22post_id%22%3Bs%3A7%3A%228505076%22%3B%7Di%3A3%3Ba%3A2%3A%7Bs%3A4%3A%22type%22%3Bi%3A1%3Bs%3A7%3A%22post_id%22%3Bs%3A7%3A%227921563%22%3B%7Di%3A4%3Ba%3A2%3A%7Bs%3A4%3A%22type%22%3Bi%3A1%3Bs%3A7%3A%22post_id%22%3Bs%3A7%3A%228506003%22%3B%7D%7D; ba_cid=a%3A5%3A%7Bs%3A6%3A%22ba_cid%22%3Bs%3A32%3A%220f936da15c1584ac71db9673406c7afb%22%3Bs%3A7%3A%22page_ex%22%3Bs%3A48%3A%22https%3A%2F%2Frent.591.com.tw%2Frent-detail-8499306.html%22%3Bs%3A4%3A%22page%22%3Bs%3A48%3A%22https%3A%2F%2Frent.591.com.tw%2Frent-detail-8503547.html%22%3Bs%3A7%3A%22time_ex%22%3Bi%3A1574604663%3Bs%3A4%3A%22time%22%3Bi%3A1574604922%3B%7D; cookie_login_user_id=2414258; c10f3143a018a0513ebe1e8d27b5391c=1; _gid=GA1.3.1055872961.1574697730; _gat=1; _gid=GA1.4.1055872961.1574697730; _dc_gtm_UA-97423186-1=1; _gat_UA-97423186-1=1; XSRF-TOKEN=eyJpdiI6IlgyTW5NQVo0SEFhVmI2aDVuTVNyQ0E9PSIsInZhbHVlIjoiMm9TUjNwSnBVbWV5ZmtTcjFxaG9EWmh3Q294ZzRsZjNnVnJoWEM3V3ljXC81ZENSWmFpaFZ5OGQxK3B3TEFqMDBQMFBXTWo0OHk0QjVEaFRYSFlpN1B3PT0iLCJtYWMiOiJmN2E3OTBiMDhmYTAyZjQwZWQzMGYzNWE5MmQ3MmVlYjE5ODExNzdlZDYyMjU2NGU0Y2RlZGY1ZGIwZjFjMWJhIn0%3D; 591_new_session=eyJpdiI6IlpUeWRIbGZxVzNFZGhkcXhnNEpIMkE9PSIsInZhbHVlIjoiUXpNOUFlcExvV0NjSEVVOEhSSWRCNHd1TitCbVRyS3dFK3JzQWpwXC9tczI2bjQ3d0pyT0JweHhLQlgwMHJaUzdObWE5MHhCbGRib0txK042YWRNY1RBPT0iLCJtYWMiOiIyOGQ3M2JlOGQ4MTBmMWJmZGI4MTU0ZTM1YzdhMjMwYmQ5NmM4MDM3MWJkOTg4MWM2NWRkN2FjMjZiNWRkZjEzIn0%3D',
+			csrftoken: 'NLPpuA2vS7bC0IMyysmjHYuYm9P2oYPfZXavm3nf',
 			sorting: 'price', // refreshtime, browsenum, price
 			listView: 'icon', // detail, icon
 			filteredText: store.get('filteredText') || '',
@@ -24,7 +26,7 @@ class search591 extends Component {
 	}
 	
 	componentDidMount() {
-		const url = 'http://localhost:8888/api/search591'
+		const url = `http://localhost:8888/api/search591`;
 		this.fetchBlackList()
 		this.fetchProtectList()
 		this.fetchHouseData(url)
@@ -62,7 +64,10 @@ class search591 extends Component {
 			})
 	}
 
-	// TODO: add to protect list, remove from protect list
+
+	// TODO: onCancelAllProtectItem
+
+
 	onClickAddProtectIcon = (e, id) => {
 		const url = 'http://localhost:8888/api/search591/protect-list'
 		e.stopPropagation()
@@ -96,10 +101,15 @@ class search591 extends Component {
 	fetchHouseData = ({ reset } = {}) => {
 		const url = 'http://localhost:8888/api/search591'
 		reset ? this.setState({ houseData: [] }) : null
+
+		const {cookie, csrftoken} = this.state;
+
 		ax.get(url, {
 			params: {
 				priceLow: this.state.priceLow * 1000,
-				priceHigh: this.state.priceHigh * 1000
+				priceHigh: this.state.priceHigh * 1000,
+				cookie,
+				csrftoken
 			}
 		})
 			.then(response => {
@@ -137,6 +147,7 @@ class search591 extends Component {
 				console.log('error:', error)
 			})
 
+		// Update view without waiting for API response
 		const nextSet = new Set(this.state.blackList)
 		nextSet.add(id+'')
 		this.setState({
@@ -160,7 +171,8 @@ class search591 extends Component {
 			.catch(error => {
 				console.log('error:', error)
 			})
-
+		
+		// Update view without waiting for API response
 		const nextBlackListSet = new Set(this.state.blackList)
 		idsWithoutProtected.forEach(id => nextBlackListSet.add(id+''))
 		this.setState({
@@ -190,6 +202,8 @@ class search591 extends Component {
 	}
 	render() {
 		const {
+			cookie,
+			csrftoken,
 			listView,
 			blackList,
 			priceHigh,
@@ -205,6 +219,22 @@ class search591 extends Component {
 
 		return (
 			<div>
+				<div>
+					<Input
+						defaultValue={cookie}
+						className="input-filter"
+						placeholder="cookie"
+						onChange={(e) => this.setState({cookie: e.target.value})}
+						title="cookie"
+					/>
+					<Input
+						defaultValue={csrftoken}
+						className="input-filter"
+						placeholder="csrftoken"
+						onChange={(e) => this.setState({csrftoken: e.target.value})}
+						title="csrftoken"
+					/>
+				</div>
 				<div className="toolbar-wrap">
 					<Input
 						defaultValue={filteredText}
